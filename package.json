@@ -1,0 +1,19 @@
+{
+  "name": "organic-socketioServer",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node ./tests/"
+  },
+  "dependencies": {
+    "organic": "0.1.1",
+    "socket.io": "latest",
+    "socket.io-client": "latest",
+    "underscore": "1.4.4"
+  },
+  "devDependencies": {
+    "jasmine-node": "latest",
+    "shelljs": "latest"
+  },
+  "license": "MIT"
+}
