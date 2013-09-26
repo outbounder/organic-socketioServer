@@ -15,7 +15,7 @@ module.exports = function WebSocketServer(plasma, config){
 
   if(config.attachToChemical) {
     this.on(config.attachToChemical, function(chemical){
-      this.server = io.listen(chemical.data.server, config.socketio || {});
+      this.server = io.listen(chemical.data, config.socketio || {});
       this.loadAddons(); 
       this.emit(new Chemical("WebSocketServer", self));
       this.server.set("log level", config.logLevel || 0);

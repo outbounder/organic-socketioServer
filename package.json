@@ -1,5 +1,5 @@
 {
-  "name": "organic-socketioServer",
+  "name": "organic-socketioserver",
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
