@@ -10,57 +10,36 @@ describe("WebSocketServer", function(){
     "socketio": {
       "close timeout": 1
     },
-    "events": {
-      "message": {
-        "type": "step1"
-      },
-      "hello": {
-        "type": "step2"
-      }
+    "emit": {
+      "ready": "WebSocketServer",
+      "connection": "SocketIOConnection",
+      "disconnection": "SocketIODisconnection"
     }
   }
 
   var server;
+  var client;
 
   it("should create new instance", function(){
     server = new WebSocketServer(plasma, config);
     expect(server).toBeDefined();
   });
 
-  it("should handle incoming connection", function(next){
-    var client = io.connect( "http://localhost", { port: config.port ,  'reconnect': false, 'force new connection': true});
-    plasma.once("socketConnection", function(c){
+  it("should emit incoming connection", function(next){
+    client = io.connect( "http://localhost", { port: config.port ,  'reconnect': false, 'force new connection': true});
+    plasma.once("SocketIOConnection", function(c){
       expect(c.data).toBeDefined();
-      client.disconnect();
       next();
     });
   });
 
-  it("should handle incoming message", function(next){
-    plasma.once("step1", function(c){
-      expect(c.data).toBe("hello world");
-      expect(c.connection).toBeDefined();
-      client.disconnect();
+  it("should emit disconnection", function(next){
+    plasma.once("SocketIODisconnection", function(c){
+      expect(c.data).toBeDefined();
       next();
-    });
-    client = io.connect( "http://localhost", { port: config.port ,  'reconnect': false, 'force new connection': true});
-    client.on("connect", function(){
-      client.emit("message", "hello world");
-    });
-  });
-
-  it("should handle incoming hello", function(next){
-    plasma.once("step2", function(c){
-      expect(c.mydata).toBe("hello world");
-      expect(c.connection).toBeDefined();
-      client.disconnect();
-      next();
-    });
-    client = io.connect( "http://localhost", { port: config.port ,  'reconnect': false, 'force new connection': true});
-    client.on("connect", function(){
-      client.emit("hello", {mydata: "hello world"});
-    });
-  });
+    })
+    client.disconnect();
+  })
 
   it("should close on receiving kill", function(){
     plasma.emit(new Chemical("kill"));

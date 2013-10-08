@@ -9,7 +9,7 @@ Emitted once the socketserver is ready for accepting incoming connections.
 
 this is optional, and depends on the `attachToChemical` DNA configuration
 
-* data.server - ExpressHttpServer instance
+* data - HttpServer instance
 
 
 # organel | WebSocketServer 
@@ -25,19 +25,7 @@ It is using socket.io under-the-hood as transports provider.
 
   when provided the Organelle will start own http server on given port and wire-up websockets server to it (functionality provided by socket.io)
 
-* `addons` - [ AddonObject ]
-
-  #### Addon Object 
-  
-  * `String` - full path to Addon source code or
-
-            {
-             source: full path to Addon source code
-             ... `config` of Addon
-            }
-
-    #### addon source code example
-
-        module.exports = function(`websocketServer`, `config`){
-         var io = websocketServer.server; // socket.io
-        }
+* emit
+  * ready - String, name of chemical to emit when ready
+  * connection - String, name of chemical to emit when new connection arrives
+  * disconnection - String, name of chemical to emit when client disconnects
