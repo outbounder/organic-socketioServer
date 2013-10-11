@@ -1,31 +1,71 @@
-# outgoing | WebSocketServer
+# organic-socketioserver
 
-Emitted once the socketserver is ready for accepting incoming connections.
+The organelle wraps [socketio](http://socket.io/) server v0.9.x
 
-* data - WebSocketServer instance
+## DNA structure and defaults
 
+    {
+      "attachToChemical": String,
+      "port": Number,
+      "socketio": Object, /* optional */
+      "emit": {
+        "ready": String,
+        "connection": String,
+        "disconnection": String /* optional */
+      }
+    }
 
-# incoming | HttpServer
+- `attachToChemical` is optional and indicates to start the socketio server
+once the organelle catches given `attachToChemical` chemical type.
 
-this is optional, and depends on the `attachToChemical` DNA configuration
+- `port` is used instead if `attachToChemical` is not provided
+to boot up standalone socketio server with buildin httpServer instance
 
-* data - HttpServer instance
+## Emits chemicals when
 
+### ready for incoming connections
 
-# organel | WebSocketServer 
+Emitted with Chemical type value of `dna.emit.ready`.
+Chemical's structure:
 
-One of the following should be provided to boot up WebSocketServer.
-It is using socket.io under-the-hood as transports provider.
+    {
+      "type": `dna.emit.ready`,
+      "data": SocketIOServer
+    }
 
-* `attachToChemical` - String
-  
-  when provided the Organelle will start listening to any chemicals with given type as String.
+### incoming client connnection
 
-* `port` - Number
+Emitted with Chemical type value of `dna.emit.connection`.
+Chemical's structure:
 
-  when provided the Organelle will start own http server on given port and wire-up websockets server to it (functionality provided by socket.io)
+    {
+      "type": `dna.emit.connection`,
+      "socket": SocketIOConnection
+    }
 
-* emit
-  * ready - String, name of chemical to emit when ready
-  * connection - String, name of chemical to emit when new connection arrives
-  * disconnection - String, name of chemical to emit when client disconnects
+### disconnected client
+
+Emitted with Chemical type value of `dna.emit.disconnection` only if present.
+Chemical's structure:
+
+    {
+      "type": `dna.emit.disconnection`,
+      "socket": SocketIOConnection
+    }
+
+## Reacts to chemicals
+
+### type: "kill"
+
+Closes underlaying socketioServer instance
+
+### type: `attachToChemical` value
+
+Expected Chemical structure:
+
+    {
+      "data": HttpServer
+    }
+
+- [HttpServer](http://nodejs.org/api/http.html#http_class_http_server)
+- the chemical is not aggregated

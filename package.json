@@ -1,9 +1,13 @@
 {
   "name": "organic-socketioserver",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "scripts": {
     "test": "jasmine-node ./tests/"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/outbounder/organic-socketioserver.git"
   },
   "dependencies": {
     "organic": "0.1.1",

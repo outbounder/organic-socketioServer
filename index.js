@@ -17,7 +17,7 @@ module.exports = Organel.extend(function SocketioServer(plasma, config){
     this.listen({data: config.port})
   else
     throw new Error("Can't find attachToChemical or port in config", config);
-     
+
   this.on("kill", this.dispose);
 }, {
   dispose: function() {
@@ -28,19 +28,20 @@ module.exports = Organel.extend(function SocketioServer(plasma, config){
   listen: function(chemical){
     var self = this
     this.server = io.listen(chemical.data, this.config.socketio || {}, function(){
-      self.emit(new Chemical(self.config.emit.ready, self.server));  
+      self.emit(new Chemical(self.config.emit.ready, self.server));
     });
     if(typeof chemical.data != "number")
-      self.emit(new Chemical(self.config.emit.ready, self.server));  
+      self.emit(new Chemical(self.config.emit.ready, self.server));
     this.server.set("log level", this.config.logLevel || 0);
     this.server.sockets.on('connection', function(socket){ self.handleIncomingConnection(socket); });
     return false;
   },
   handleIncomingConnection: function(connection){
     var self = this;
-    connection.on('disconnect', function(){
-      self.emit(new Chemical(self.config.emit.disconnection, connection)); 
-    });
+    if(self.config.emit.disconnection)
+      connection.on('disconnect', function(){
+        self.emit(new Chemical(self.config.emit.disconnection, connection));
+      });
     this.emit(new Chemical(self.config.emit.connection, connection));
   }
 })
